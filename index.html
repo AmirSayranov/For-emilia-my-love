@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Валентинка</title>
+  <title>Письмо для Эмилии</title>
   <style>
     :root{
       --text:#111;
@@ -59,6 +59,44 @@
       font-weight:700;
     }
 
+    .mapCard{
+      position:relative;
+      width:min(760px, 94vw);
+      height:clamp(230px, 42vw, 360px);
+      margin:18px auto;
+      overflow:hidden;
+      border:1px solid rgba(140,91,118,.18);
+      border-radius:28px;
+      background:linear-gradient(145deg,#fcebf0,#fff8f1 58%,#eaf4fb);
+      box-shadow:0 20px 50px rgba(111,73,91,.12);
+    }
+    .mapCard:before,.mapCard:after{content:"";position:absolute;border:1px solid rgba(165,132,145,.16);border-radius:50%;transform:rotate(-18deg)}
+    .mapCard:before{width:120%;height:62%;left:-10%;top:14%}
+    .mapCard:after{width:110%;height:42%;left:-4%;top:30%;transform:rotate(18deg)}
+    .routeSvg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+    .routePath{fill:none;stroke:#d69aae;stroke-width:2.5;stroke-dasharray:8 9;stroke-linecap:round}
+    .plane{position:absolute;left:0;top:0;font-size:30px;transform:translate(-50%,-50%) rotate(0deg);filter:drop-shadow(0 5px 5px #a46c7b44);z-index:2;will-change:left,top,transform}
+    .plane.fly{animation:flyRoute 4.8s linear forwards}
+    @keyframes flyRoute{
+      0%{left:13.8%;top:75%;transform:translate(-50%,-50%) rotate(-8deg)}
+      25%{left:30%;top:71%;transform:translate(-50%,-50%) rotate(-51deg)}
+      50%{left:51.3%;top:33.3%;transform:translate(-50%,-50%) rotate(8deg)}
+      75%{left:71.4%;top:36.4%;transform:translate(-50%,-50%) rotate(-8deg)}
+      100%{left:86.2%;top:25.6%;transform:translate(-50%,-50%) rotate(-8deg)}
+    }
+    .city{position:absolute;z-index:1;display:flex;flex-direction:column;gap:3px;font-size:13px;color:#715461}
+    .city b{font-size:16px;color:#4b3541}
+    .city:before{content:"";width:10px;height:10px;border:3px solid #fff;border-radius:50%;background:#cb718f;box-shadow:0 0 0 2px #cb718f}
+    .cityFrom{left:7%;bottom:13%}.cityTo{right:6%;top:12%;align-items:flex-end}
+    .cityTo:before{background:#7baac2;box-shadow:0 0 0 2px #7baac2}
+    .flightNote{position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);padding:8px 12px;border-radius:99px;background:#ffffffb8;color:#876376;font-size:13px;white-space:nowrap}
+    .primary{background:#9e5875;color:#fff;box-shadow:0 10px 24px #9e587533}
+    .envelope{font-size:clamp(72px,14vw,112px);line-height:1;display:block;margin:12px auto;filter:drop-shadow(0 10px 12px #9e587522);animation:envelopeBob 2.2s ease-in-out infinite}
+    @keyframes envelopeBob{50%{transform:translateY(-8px) rotate(-3deg)}}
+    .arrived{animation:arrive .8s both}
+    @keyframes arrive{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+    .mapCaption{font-size:15px;color:#785f6b;line-height:1.5}
+
     .btnArea{
       position: relative;
       display:flex;
@@ -79,16 +117,6 @@
       user-select:none;
       -webkit-tap-highlight-color: transparent;
     }
-    #yesBtn{
-      background:var(--btn);
-      color:var(--btnText);
-    }
-    #noBtn{
-      background:var(--btn2);
-      color:var(--btn2Text);
-      position: relative;
-    }
-
     .hidden{display:none}
 
     /* =================== Screen 2 (Final) UI =================== */
@@ -193,6 +221,35 @@
       font-size: 14px;
       margin: 0;
     }
+
+    /* =================== OUR PHOTO MEMORIES =================== */
+    .memoriesWrap{
+      width:min(980px, 94vw);
+      max-height:82vh;
+      overflow:auto;
+      padding:clamp(16px,3vw,30px);
+      border:1px solid rgba(140,91,118,.16);
+      border-radius:26px;
+      background:rgba(255,255,255,.88);
+      box-shadow:0 18px 50px rgba(111,73,91,.12);
+      scrollbar-width:thin;
+    }
+    .memoriesTitle{margin:0;color:#75475e;font-size:clamp(30px,5vw,48px);letter-spacing:-.04em}
+    .memoriesLead{margin:8px auto 24px;max-width:52ch;color:#806c76;line-height:1.6}
+    .memoryGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;align-items:start}
+    .memoryCard{
+      margin:0;padding:10px 10px 14px;background:#fffdf9;border-radius:5px 5px 12px 12px;
+      box-shadow:0 9px 24px rgba(73,48,59,.15);transform:rotate(var(--tilt));
+      opacity:0;animation:memoryAppear .7s cubic-bezier(.2,.8,.2,1) forwards;
+      animation-delay:calc(var(--order) * 90ms);transition:transform .25s ease,box-shadow .25s ease;
+    }
+    .memoryCard:hover{transform:rotate(0) translateY(-5px) scale(1.025);box-shadow:0 16px 32px rgba(73,48,59,.2);z-index:1}
+    .memoryCard img{display:block;width:100%;height:clamp(150px,22vw,280px);object-fit:cover;border-radius:3px}
+    .memoryCard figcaption{padding:11px 3px 0;color:#8c6074;text-align:center;font:600 14px/1.35 Georgia,serif}
+    @keyframes memoryAppear{from{opacity:0;transform:translateY(18px) rotate(var(--tilt)) scale(.96)}to{opacity:1;transform:translateY(0) rotate(var(--tilt)) scale(1)}}
+    .memoryEnding{margin:26px 0 6px;color:#965d77;font-size:clamp(20px,3vw,27px);font-weight:800}
+    @media(max-width:680px){.memoryGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.memoryCard{padding:7px 7px 11px}.memoryCard img{height:clamp(150px,48vw,250px)}.memoriesWrap{max-height:84vh}}
+    @media(max-width:390px){.memoryGrid{gap:12px}.memoryCard figcaption{font-size:12px}}
 
     /* =================== PARTY: Djokovic =================== */
     .dj-float{
@@ -385,84 +442,110 @@
   <div class="wrap">
     <!-- =================== SCREEN 1 =================== -->
     <div class="box" id="screen1">
-      <h1>Дорогая Алиночка!</h1>
-
-      <img class="img" alt="cute" src="https://ethanfangg.github.io/valentine-puzzle/images/full-image.png">
-
-      <div class="sub">…ты меня дополняешь 💖</div>
-
-      <div class="question">Ты будешь моей Валентинкой?</div>
-
-      <div class="btnArea">
-        <button id="yesBtn">Да</button>
-        <button id="noBtn">Нет</button>
+      <h1>Эмилия, это письмо летит к тебе 💌</h1>
+      <div class="sub">Между нами города. Внутри меня - ты</div>
+      <div class="mapCard" aria-label="Схематичный маршрут самолёта из Набережных Челнов в Москву">
+        <svg class="routeSvg" viewBox="0 0 760 360" aria-hidden="true"><path class="routePath" d="M105 270 C220 255 250 90 390 112 S565 110 655 92"/></svg>
+        <div class="city cityFrom"><b>Набережные Челны</b><span>от меня 🤍</span></div>
+        <div class="city cityTo"><b>Москва</b><span>к тебе 💗</span></div>
+        <div class="flightNote" id="flightNote">Хочу чтобы ты всегда чувствовала что я рядом</div>
+        <div class="plane" id="plane" aria-hidden="true">✈️</div>
       </div>
-
-      <div class="sig">Люблю тебя, твой Амирчик!</div>
+      <div class="mapCaption" id="mapCaption">Между нами города. Внутри меня - ты</div>
+      <button class="primary" id="flyBtn">Отправить письмо в Москву ✨</button>
+      <div class="sig">С любовью от Амирчика</div>
     </div>
 
     <!-- =================== SCREEN 2 (FINAL) =================== -->
     <div class="box final hidden" id="screen2">
-      <div class="finalTop">
-        <button class="topBtn" id="whyBtn">Почему я тебя люблю?</button>
+      <div class="arrived">
+        <div class="envelope" aria-hidden="true">💌</div>
+        <h2>Послание доставлено!</h2>
+        <div class="finalBigText">Самолёт прилетел в Москву, а в его багаже — кое-что очень личное и очень важное для тебя.</div>
+        <button class="primary" id="openLetterBtn">Открыть письмо 💗</button>
       </div>
-
-      <h2>УРА!!! Я просто не могу дождаться момента, когда мы встретимся ❤️</h2>
-
-      <div class="finalBigText">
-        Сегодня ты сказала мне «ДА» — и весь мой мир стал ярче.<br>
-        Я сделал этот мини-сайт, чтобы ты улыбнулась.<br>
-        Ты мой любимый человек: моё спокойствие, моя душа и моё солнце — всё в одной тебе.
-      </div>
-
-      <!-- котик (safe-zone) -->
-      <img id="catGif" class="img catBig" alt="gif" src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif">
-
-      <button class="reset" id="resetBtn">Сначала</button>
+      <div><button class="reset" id="resetBtn">Пролететь ещё раз</button></div>
     </div>
 
     <!-- =================== SCREEN 3 (LETTER) =================== -->
     <div class="box hidden" id="screen3">
       <div class="letterWrap">
-        <h3 class="letterTitle">Почему я тебя люблю?</h3>
+        <h3 class="letterTitle">Моей любимой Эмилечке 🤍</h3>
 
-        <p class="letterText" id="letterText">
-Алиночка,
+        <p class="letterText" id="letterText">Моя любимая Эмилечка, пока этот маленький самолетик летел к тебе, я собрал здесь то, что у меня внутри. Хочу чтобы ты прочитала это и почувствовала, как сильно я тебя люблю и как сильно жду нас с тобой рядом.
 
-Я люблю тебя не за одну причину — я люблю тебя за сотни маленьких вещей, которые вместе ощущаются как одно большое чудо.
+Во вторник вечером ты уже прилетишь в Казань, а 2 октября приеду я. Я увольняюсь, мы собираемся жить вместе и у меня до сих пор немного не укладывается в голове, сколько всего сейчас меняется. Я постоянно думаю о том, что совсем скоро смогу просто обнять тебя после обычного рабочего дня. Мы будем засыпать вместе, просыпаться вместе и нам не придется каждый вечер прощаться. Можно будет прижать тебя к себе и спокойно уснуть, зная что утром ты тоже будешь рядом.
 
-1) Я люблю то, как ты умеешь превращать обычные моменты в тёплые и живые.
-2) Я люблю твою улыбку - она меняет всё вокруг.
-3) Я люблю твою силу. Ты справляешься с жизнью с красивой смелостью.
-4) Я люблю твою нежность - то, как ты заботишься, замечаешь детали и бережно относишься к людям.
-5) Я люблю то, как ты вдохновляешь меня. Рядом с тобой я хочу быть лучше, спокойнее, добрее и сильнее.
-6) Я люблю тебя за твою неземную красоту, которая каждый раз сводит меня с ума...
+Я безумно этого жду. И мне хочется честно сказать тебе, что мне немного страшно. Ты первая девушка, с которой я буду жить. Ты первая, к кому я испытываю настолько сильные чувства. И первый человек, которого я так близко к себе подпустил. Я никогда настолько не открывался и не пускал кого-то так глубоко в свой внутренний мир.
 
-Большой кайф мне доставляет то, что ты так любишь теннис!!!
+А с тобой мне хочется делиться вообще всем. Своими мыслями, переживаниями, какими-то глупостями, желаниями, тем что радует и тем что болит. Я могу говорить с тобой о вещах, которые раньше оставлял только себе. Мне рядом с тобой нечего стесняться. Я доверяю тебе так сильно, как никогда никому не доверял. И иногда сам удивляюсь, как мне стало легко рассказывать то, что раньше я бы даже не смог произнести вслух.
 
-Спасибо, что ты есть. Могу бесконечно продолжать список, но думаю, ты и так знаешь, что я тебя безумно люблю!!
-Спасибо, что выбираешь меня.
-И если любовь — это матч, то с тобой я всегда хочу играть следующий сет.
+Мне хочется проводить с тобой 24/7. Готовить, спать, болтать, курить сигареты, пить вино, правильно питаться, заниматься спортом, ухаживать за тобой, убираться. Мне хочется с тобой всего этого, даже самых обычных домашних дел. Выбирать продукты, придумывать что будем есть, отвлекать тебя поцелуями пока ты чем-то занята. Заниматься своими делами и знать, что ты где-то рядом и можно просто подойти к тебе и обнять.
 
-Всегда твой,
-Амирчик ❤️
-        </p>
+Хочу развиваться вместе с тобой. Рассказывать тебе новости, слушать твои, обсуждать наши идеи и радоваться тому, что у каждого получается. Хочу знать, что тебя волнует, о чем ты мечтаешь, что тебе сейчас нужно. Мне интересно узнавать тебя дальше. Даже когда кажется, что ты уже такая родная и будто была в моей жизни всегда.
 
-        <p class="smallHint">P.S. Попробуй нажать кнопку НЕТ, в начале))</p>
+И знаешь, несмотря на то что все это для меня впервые, благодаря тебе я в последнее время стал гораздо меньше бояться. Появилось столько желания что-то делать, пробовать, менять. Я не боюсь, что у нас может что-то не получиться с первого раза. Я уверен в том, что сделаю все от себя зависящее, чтобы мы справились и решили наши проблемы. И я верю тебе. Верю в то, что ты тоже будешь стараться ради нас.
+
+Я хочу учиться говорить с тобой даже тогда, когда мне сложно. Слушать тебя и понимать. Мне хочется чтобы мы могли рассказать друг другу все, даже если разговор не самый простой. Ты очень дорога мне и я хочу беречь то, что у нас с тобой есть.
+
+Не зря говорят, что случайными кажутся события, причины которых мы не знаем. Я каждый раз думаю о том, как мы встретились, и все больше убеждаюсь, что это кто-то подстроил. Вселенная, судьба, бог, космос, называй как хочешь. Для меня это правда какая-то волшебная магия.
+
+Каждый день происходит что-то, чему я как ребенок удивляюсь. Как будто когда я встретил тебя, я вытянул самый счастливый билет в лотерее. И то как все складывается, меня просто шокирует. Я пиздец как этому удивляюсь. Иногда останавливаюсь и думаю, неужели это правда сейчас моя жизнь. Неужели у меня есть ты и совсем скоро мы будем жить вместе.
+
+С твоим появлением столько хорошего во мне и вокруг меня как будто начало расцветать. У меня больше тепла, больше смелости, больше желания двигаться вперед. Мне хочется заботиться, делиться, делать тебя счастливой. Хочется чтобы ты чувствовала, как сильно тебя любят, даже в те дни, когда ты устала или у тебя просто нет настроения.
+
+Я хочу быть рядом, ухаживать за тобой, кормить, целовать, жалеть, заступаться. Укрывать тебя, обнимать, когда тебе грустно, и слушать столько, сколько тебе нужно. Мне хочется чтобы ты знала, что ко мне можно прийти с любым настроением и рассказать о чем угодно. Ты мояяяяяя любимая девочка. Мне так много хочется тебе дать и так сильно хочется тебя беречь.
+
+Иногда мне даже кажется, что я слишком много раз за день говорю тебе, как сильно люблю. Какая ты красивая. Как я соскучился. Я могу сказать это и буквально через несколько минут захотеть повторить. Но я правда так чувствую. Смотрю на тебя и думаю, какая же ты у меня красивая. Слышу твой голос и улыбаюсь. Только попрощались, а я уже хочу обратно к тебе.
+
+Я засыпаю и просыпаюсь с мыслями о тебе. И просто не могу представить, что всего лишь месяц назад тебя еще не было в моей жизни вот так. Не было наших разговоров, нашей близости, этих чувств. А теперь ты для меня настолько родная, что я даже не знаю как объяснить это словами. Ты как воздух которым я дышу, как земля по которой я хожу. Столько всего в моей жизни теперь связано с тобой.
+
+Я нашел человека, с которым хочу прожить до конца своей жизни. Мне хочется смотреть, как мы меняемся, чего добиваемся, чему учимся. Хочется спустя годы точно так же подходить к тебе, обнимать и говорить, какая ты красивая. И всегда радоваться твоей улыбке, как в первый раз
+
+Сейчас я просто очень жду 2 октября. Когда приеду, увижу тебя и наконец смогу обнять так крепко, как мне хочется все это время. Поставлю вещи и пойму, что вот она, та о которой я всю жизнь мечтал.
+
+Я тебя безумно люблю. Ты просто даже не представляешь насколько. И я очень надеюсь, что благодаря этому маленькому письму ты почувствовала хотя бы 1/10000 того, что я ощущаю каждый день.
+
+Скоро обниму тебя, моя хорошая. И буду еще долго стоять так и не отпускать 🤍</p>
+        <p class="smallHint">Сколько бы километров ни было между нами, ты всегда у меня в сердце 🤍</p>
 
         <div class="letterBtns">
           <button class="backBtn" id="backBtn">Назад</button>
+          <button class="primary" id="memoriesBtn">Наши моменты ✨</button>
           <button class="reset" id="resetBtn2">Сначала</button>
         </div>
+      </div>
+    </div>
+
+    <!-- =================== SCREEN 4 (OUR MEMORIES) =================== -->
+    <div class="box hidden" id="screen4">
+      <div class="memoriesWrap">
+        <h2 class="memoriesTitle">Маленький альбом про нас 📸</h2>
+        <p class="memoriesLead">Любимые глупости, тёплые объятия и моменты, которые хочется хранить поближе к сердцу.</p>
+        <div class="memoryGrid">
+          <figure class="memoryCard" style="--order:0;--tilt:-2deg"><img src="photos/memory-01.jpg" alt="Совместное селфи у зеркала" loading="lazy"><figcaption>Моё любимое отражение — рядом с тобой</figcaption></figure>
+          <figure class="memoryCard" style="--order:1;--tilt:1.7deg"><img src="photos/memory-02.jpg" alt="Весёлое селфи вместе" loading="lazy"><figcaption>С тобой даже лифт — место для приключений</figcaption></figure>
+          <figure class="memoryCard" style="--order:2;--tilt:-1deg"><img src="photos/memory-03.jpg" alt="Нежный поцелуй на солнце" loading="lazy"><figcaption>Солнечный момент, который хочется повторить</figcaption></figure>
+          <figure class="memoryCard" style="--order:3;--tilt:2deg"><img src="photos/memory-04.jpg" alt="Мы на прогулке у воды" loading="lazy"><figcaption>Вода, вечер и ты рядом — идеальный день</figcaption></figure>
+          <figure class="memoryCard" style="--order:4;--tilt:-1.8deg"><img src="photos/memory-05.jpg" alt="Селфи на фоне заката" loading="lazy"><figcaption>Закат красивый, но ты всё равно красивее</figcaption></figure>
+          <figure class="memoryCard" style="--order:5;--tilt:1deg"><img src="photos/memory-06.jpg" alt="Поцелуй у воды на закате" loading="lazy"><figcaption>Ещё один поцелуй в копилку моих любимых</figcaption></figure>
+          <figure class="memoryCard" style="--order:6;--tilt:2deg"><img src="photos/memory-07.jpg" alt="Весёлое фото на прогулке" loading="lazy"><figcaption>Твоя улыбка — моё любимое приключение</figcaption></figure>
+          <figure class="memoryCard" style="--order:7;--tilt:-1.5deg"><img src="photos/memory-08.jpg" alt="Объятия перед зеркалом" loading="lazy"><figcaption>Там, где твои объятия, — моё место</figcaption></figure>
+          <figure class="memoryCard" style="--order:8;--tilt:1.8deg"><img src="photos/memory-09.jpg" alt="Селфи перед зеркалом" loading="lazy"><figcaption>Моя любимая команда 🤍</figcaption></figure>
+          <figure class="memoryCard" style="--order:9;--tilt:-1deg"><img src="photos/memory-10.jpg" alt="Уютное совместное селфи" loading="lazy"><figcaption>Уютно — это просто быть рядом</figcaption></figure>
+          <figure class="memoryCard" style="--order:10;--tilt:1.5deg"><img src="photos/memory-11.jpg" alt="Забавное селфи вместе" loading="lazy"><figcaption>Наши серьёзные лица (почти)</figcaption></figure>
+          <figure class="memoryCard" style="--order:11;--tilt:-2deg"><img src="photos/memory-12.jpg" alt="Смешная совместная фотография" loading="lazy"><figcaption>С тобой я всегда улыбаюсь вот так</figcaption></figure>
+        </div>
+        <p class="memoryEnding">И это только несколько причин, почему я тебя люблю. ❤️</p>
+        <div class="letterBtns"><button class="backBtn" id="backToLetterBtn">К письму</button><button class="reset" id="resetBtn3">Сначала</button></div>
       </div>
     </div>
   </div>
 
   <script>
-    /* =================== PASSWORD SETTINGS (каждый раз + любой регистр) =================== */
-    const SITE_PASSWORD = "Алина";
-    const HINT_TEXT = "Подсказка: как тебя зовут? 😉";
-
+    /* Password gate */
+    const SITE_PASSWORD = "Эмилия";
+    const HINT_TEXT = "Подсказка: имя человека, которому летит письмо 😉";
     const gate = document.getElementById('gate');
     const gateCard = document.getElementById('gateCard');
     const spinner = document.getElementById('spinner');
@@ -473,299 +556,127 @@
     const enterBtn = document.getElementById('enterBtn');
     const hint = document.getElementById('hint');
     const error = document.getElementById('error');
-
     hint.textContent = HINT_TEXT;
 
-    function openSite(){
-      gate.style.display = 'none';
-    }
-
-    function fail(){
-      error.style.display = 'block';
-      gateCard.classList.remove('shake');
-      void gateCard.offsetWidth;
-      gateCard.classList.add('shake');
-      passInput.focus();
-      passInput.select();
-    }
-
-    function norm(s){
-      return (s || "")
-        .trim()
-        .toLowerCase()
-        .replaceAll("ё","е");
-    }
-
     function tryEnter(){
-      const v = norm(passInput.value);
-      const p = norm(SITE_PASSWORD);
-
-      if (v === p){
-        // НЕ сохраняем — пароль будет спрашиваться каждый раз
-        openSite();
+      if ((passInput.value || '').trim().toLowerCase().replaceAll('ё','е') === SITE_PASSWORD.toLowerCase().replaceAll('ё','е')) {
+        gate.style.display = 'none';
       } else {
-        fail();
+        error.style.display = 'block';
+        gateCard.classList.remove('shake');
+        void gateCard.offsetWidth;
+        gateCard.classList.add('shake');
+        passInput.focus();
+        passInput.select();
       }
     }
-
     enterBtn.addEventListener('click', tryEnter);
-    passInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') tryEnter();
-    });
+    passInput.addEventListener('keydown', e => { if (e.key === 'Enter') tryEnter(); });
 
-    // Всегда показываем экран загрузки и затем пароль (каждый раз)
     let progress = 0;
-    const t = setInterval(() => {
+    const loader = setInterval(() => {
       progress = Math.min(100, progress + Math.floor(Math.random()*10) + 5);
       bar.style.width = progress + '%';
       pct.textContent = `Загружаю… ${progress}%`;
-
-      if (progress >= 100){
-        clearInterval(t);
+      if (progress >= 100) {
+        clearInterval(loader);
         spinner.style.display = 'none';
-        pct.textContent = "Готово! Введи пароль ↓";
+        pct.textContent = 'Готово! Введи пароль ↓';
         passwordBlock.classList.remove('hidden');
         passInput.focus();
       }
     }, 220);
 
-    /* =================== YOUR ORIGINAL LOGIC =================== */
-    const yesBtn = document.getElementById('yesBtn');
-    const noBtn  = document.getElementById('noBtn');
-
     const screen1 = document.getElementById('screen1');
     const screen2 = document.getElementById('screen2');
     const screen3 = document.getElementById('screen3');
-
-    const whyBtn = document.getElementById('whyBtn');
+    const screen4 = document.getElementById('screen4');
+    const flyBtn = document.getElementById('flyBtn');
+    const plane = document.getElementById('plane');
+    const mapCaption = document.getElementById('mapCaption');
+    const flightNote = document.getElementById('flightNote');
+    const openLetterBtn = document.getElementById('openLetterBtn');
     const backBtn = document.getElementById('backBtn');
+    const memoriesBtn = document.getElementById('memoriesBtn');
+    const backToLetterBtn = document.getElementById('backToLetterBtn');
     const resetBtn = document.getElementById('resetBtn');
     const resetBtn2 = document.getElementById('resetBtn2');
+    const resetBtn3 = document.getElementById('resetBtn3');
 
-    const catGif = document.getElementById('catGif');
-
-    function rectsIntersect(a, b){
-      return !(
-        a.right  <= b.left ||
-        a.left   >= b.right ||
-        a.bottom <= b.top ||
-        a.top    >= b.bottom
-      );
+    function goToScreen(n) {
+      [screen1, screen2, screen3, screen4].forEach((screen, i) => screen.classList.toggle('hidden', i + 1 !== n));
     }
 
-    function getCatSafeRect(pad = 28){
-      if (!catGif) return null;
-      if (screen2.classList.contains('hidden')) return null;
-      const r = catGif.getBoundingClientRect();
-      return {
-        left:   r.left - pad,
-        top:    r.top - pad,
-        right:  r.right + pad,
-        bottom: r.bottom + pad
-      };
-    }
-
-    function moveNoAway(pointerX=null, pointerY=null){
-      const pad = 12;
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-
-      const b = noBtn.getBoundingClientRect();
-
-      const maxX = vw - b.width  - pad;
-      const maxY = vh - b.height - pad;
-
-      let x = Math.random() * maxX + pad;
-      let y = Math.random() * maxY + pad;
-
-      if(pointerX !== null && pointerY !== null){
-        const cx = b.left + b.width/2;
-        const cy = b.top + b.height/2;
-        const dx = cx - pointerX;
-        const dy = cy - pointerY;
-        const len = Math.max(1, Math.hypot(dx,dy));
-        const ux = dx/len;
-        const uy = dy/len;
-        const jump = 180;
-
-        x = Math.max(pad, Math.min(maxX, b.left + ux*jump));
-        y = Math.max(pad, Math.min(maxY, b.top  + uy*jump));
-      }
-
-      noBtn.style.position = 'fixed';
-      noBtn.style.left = x + 'px';
-      noBtn.style.top  = y + 'px';
-      noBtn.style.zIndex = 50;
-    }
-
-    document.addEventListener('mousemove', (e) => {
-      if (screen1.classList.contains('hidden')) return;
-      const b = noBtn.getBoundingClientRect();
-      const cx = b.left + b.width/2;
-      const cy = b.top + b.height/2;
-      const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
-      if(dist < 90) moveNoAway(e.clientX, e.clientY);
-    });
-
-    noBtn.addEventListener('touchstart', (e) => {
-      const tt = e.touches[0];
-      moveNoAway(tt.clientX, tt.clientY);
-      e.preventDefault();
-    }, { passive:false });
-
-    noBtn.addEventListener('click', (e) => {
-      moveNoAway();
-      e.preventDefault();
-    });
-
-    /* ================== PARTY MODE (Djokovic + Hearts) ================== */
-    const djokovicGifs = [
-      "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExZTN0czExcHFvNHFkMmt3emJ1bXRmYm83M3RjamViNHI2eDBmZjZsaiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/mPIROKHWddyuIMQHVu/giphy.gif",
-      "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExcjFhdjQ3bXRkMDJsa29zMnUwa3lpZ3N2ZWhjZ3pmYTJ6d3RsMTNjdiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2vBIaOa6X7VGQOOeet/giphy.gif",
-      "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbHkxYjVseHdrMW9mbmg4YTAyM2xxamVlbmlkbzVjcTRrcTNjOGl1ZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xT5LMt6qp5dLmEMZTW/giphy.gif",
-      "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZWpqaHJ1OGx2YzFhOW05ODFib2Z6ZHBxZGY0bjkyNDNrbmpnYnVhYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Fk7ekgDbcK9gsQPm9L/giphy.gif",
-      "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExeXh4NDdmeGswNnVzMmV6MTNoemxrNzlkMGlrMXNqcXoyanR5YXFiNSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/zzNT9sBZ0HEEyNOwTT/giphy.gif",
-      "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOThzOW5mZ2Vzam5rcWNudzZnNWhhZHJjZWV3amhxbW52bDJ0cTEwZyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/idnMwaSnOYdbxkfyJm/giphy.gif"
-    ];
-
-    const hearts = ["💖","💗","💓","💞","💘","❤️","🤍","😍","✨"];
-
-    let djInterval = null;
+    const hearts = ['💖','💗','💓','💞','💘','❤️','🤍','✨'];
     let heartInterval = null;
-
-    const MAX_DJ = 14;
-    const MAX_HEARTS = 40;
-
-    function countOnScreen(selector){
-      return document.querySelectorAll(selector).length;
-    }
-
-    function spawnDjokovic(){
-      if (countOnScreen(".dj-float") >= MAX_DJ) return;
-
-      const img = document.createElement("img");
-      img.src = djokovicGifs[Math.floor(Math.random()*djokovicGifs.length)];
-      img.className = "dj-float";
-
-      const size = Math.floor(Math.random() * 140) + 90;
-      const dur  = Math.floor(Math.random() * 2200) + 3400;
-      const rot  = (Math.random() * 26 - 13).toFixed(2) + "deg";
-
-      img.style.width = size + "px";
-      img.style.setProperty("--dur", dur + "ms");
-      img.style.setProperty("--rot", rot);
-
-      const safe = getCatSafeRect(28);
-
-      let placed = false;
-      for (let i = 0; i < 18; i++){
-        const x = Math.random() * (window.innerWidth  - size);
-        const y = Math.random() * (window.innerHeight - size);
-
-        const djRect = { left:x, top:y, right:x+size, bottom:y+size };
-        if (safe && rectsIntersect(djRect, safe)) continue;
-
-        img.style.left = Math.max(8, x) + "px";
-        img.style.top  = Math.max(8, y) + "px";
-        placed = true;
-        break;
-      }
-      if (!placed) return;
-
-      document.body.appendChild(img);
-      setTimeout(() => img.remove(), dur + 50);
-    }
-
-    function spawnHeart(){
-      if (countOnScreen(".heart") >= MAX_HEARTS) return;
-
-      const h = document.createElement("div");
-      h.className = "heart";
-      h.textContent = hearts[Math.floor(Math.random()*hearts.length)];
-
-      const size = (Math.random() * 24 + 28).toFixed(0);
-      const dur  = Math.floor(Math.random() * 1500) + 2400;
-      const startX = Math.random() * window.innerWidth;
-      const driftX = (Math.random() * 300 - 150).toFixed(0) + "px";
-      const flyY   = (Math.random() * 280 + 460).toFixed(0) + "px";
-
-      const rot = (Math.random() * 60 - 30).toFixed(0) + "deg";
-      const scale = (Math.random() * 0.7 + 1.0).toFixed(2);
-
-      h.style.left = startX + "px";
-      h.style.top  = (window.innerHeight + 40) + "px";
-      h.style.fontSize = size + "px";
-      h.style.setProperty("--hdur", dur + "ms");
-      h.style.setProperty("--hx", driftX);
-      h.style.setProperty("--hy", "-" + flyY);
-      h.style.setProperty("--hr", rot);
-      h.style.setProperty("--hs", scale);
-
-      document.body.appendChild(h);
-      setTimeout(() => h.remove(), dur + 60);
-    }
-
-    function startParty(){
-      stopParty();
-
-      djInterval = setInterval(() => {
-        if (screen2.classList.contains('hidden')) return;
-        spawnDjokovic();
-        if (Math.random() < 0.25) spawnDjokovic();
-      }, 650);
-
-      heartInterval = setInterval(() => {
-        if (screen2.classList.contains('hidden')) return;
-        spawnHeart();
-        if (Math.random() < 0.55) spawnHeart();
-      }, 220);
-    }
-
-    function stopParty(){
-      if (djInterval) clearInterval(djInterval);
+    function stopHearts() {
       if (heartInterval) clearInterval(heartInterval);
-      djInterval = null;
       heartInterval = null;
-      document.querySelectorAll(".dj-float, .heart").forEach(el => el.remove());
+      document.querySelectorAll('.heart').forEach(el => el.remove());
+    }
+    function startHearts() {
+      stopHearts();
+      heartInterval = setInterval(() => {
+        if ((screen2.classList.contains('hidden') && screen4.classList.contains('hidden')) || document.querySelectorAll('.heart').length > 24) return;
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+        heart.style.left = Math.random() * innerWidth + 'px';
+        heart.style.top = innerHeight + 40 + 'px';
+        heart.style.fontSize = (28 + Math.random() * 24) + 'px';
+        heart.style.setProperty('--hdur', (2600 + Math.random() * 1200) + 'ms');
+        heart.style.setProperty('--hx', (Math.random() * 240 - 120) + 'px');
+        heart.style.setProperty('--hy', '-' + (460 + Math.random() * 260) + 'px');
+        heart.style.setProperty('--hr', (Math.random() * 50 - 25) + 'deg');
+        heart.style.setProperty('--hs', (1 + Math.random() * .5).toFixed(2));
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 4000);
+      }, 260);
     }
 
-    function goToScreen(n){
-      screen1.classList.add('hidden');
-      screen2.classList.add('hidden');
-      screen3.classList.add('hidden');
-
-      if(n === 1) screen1.classList.remove('hidden');
-      if(n === 2) screen2.classList.remove('hidden');
-      if(n === 3) screen3.classList.remove('hidden');
-    }
-
-    yesBtn.addEventListener('click', () => {
-      goToScreen(2);
-      startParty();
+    flyBtn.addEventListener('click', () => {
+      if (flyBtn.disabled) return;
+      flyBtn.disabled = true;
+      flyBtn.textContent = 'Самолёт уже в пути… ✈️';
+      plane.classList.remove('fly');
+      void plane.offsetWidth;
+      plane.classList.add('fly');
+      mapCaption.textContent = 'Между нами города. Внутри меня - ты';
+      flightNote.textContent = 'Хочу чтобы ты всегда чувствовала что я рядом';
+      setTimeout(() => {
+        goToScreen(2);
+        flyBtn.disabled = false;
+        flyBtn.textContent = 'Отправить письмо в Москву ✨';
+        startHearts();
+      }, 4900);
     });
-
-    whyBtn.addEventListener('click', () => {
-      stopParty();
+    openLetterBtn.addEventListener('click', () => {
+      stopHearts();
       goToScreen(3);
       document.querySelector('.letterWrap').scrollTop = 0;
     });
-
-    backBtn.addEventListener('click', () => {
-      goToScreen(2);
-      startParty();
+    memoriesBtn.addEventListener('click', () => {
+      goToScreen(4);
+      document.querySelector('.memoriesWrap').scrollTop = 0;
+      document.querySelectorAll('.memoryCard').forEach(card => {
+        card.style.animation = 'none';
+        void card.offsetWidth;
+        card.style.animation = '';
+      });
+      startHearts();
     });
-
-    function resetAll(){
-      stopParty();
-      noBtn.style.position = 'relative';
-      noBtn.style.left = '';
-      noBtn.style.top = '';
-      noBtn.style.zIndex = '';
+    backToLetterBtn.addEventListener('click', () => { stopHearts(); goToScreen(3); });
+    backBtn.addEventListener('click', () => { goToScreen(2); startHearts(); });
+    function resetAll() {
+      stopHearts();
+      plane.classList.remove('fly');
+      mapCaption.textContent = 'Между нами города. Внутри меня - ты';
+      flightNote.textContent = 'Хочу чтобы ты всегда чувствовала что я рядом';
       goToScreen(1);
     }
-
     resetBtn.addEventListener('click', resetAll);
     resetBtn2.addEventListener('click', resetAll);
+    resetBtn3.addEventListener('click', resetAll);
   </script>
 </body>
 </html>
